@@ -2,7 +2,7 @@ from marshmallow import Schema, EXCLUDE, fields, post_load
 from marshmallow_sqlalchemy import SQLAlchemyAutoSchema, auto_field
 from core.models import users 
 from core.libs.helpers import GeneralObject
-from core.models.teachers import Teacher 
+from core.models import Teacher ,User
 
 
 class TeacherSchema(SQLAlchemyAutoSchema):
@@ -16,24 +16,17 @@ class TeacherSchema(SQLAlchemyAutoSchema):
     created_at = auto_field(dump_only=True)
     updated_at = auto_field(dump_only=True)
    
-    @post_load
-    def initiate_class(self, data_dict, many, partial):
-        # pylint: disable=unused-argument,no-self-use
-        return Teacher(**data_dict)
 
 
-class TeacherDetailSchema(Schema):
+
+class UserSchema(SQLAlchemyAutoSchema):
     class Meta:
+        model = User
         unknown = EXCLUDE
+        include_fk = True
 
-    id = fields.Integer(required=True, allow_none=False)
-    user_id = fields.Integer(required=True, allow_none=False)
+    id = fields.Int(required=False, allow_none=True)
+    username = fields.Str()
+    email = fields.Str()
     created_at = fields.DateTime(dump_only=True)
     updated_at = fields.DateTime(dump_only=True)
-    
-
-
-    @post_load
-    def initiate_class(self, data_dict, many, partial):
-        # pylint: disable=unused-argument,no-self-use
-        return GeneralObject(**data_dict)

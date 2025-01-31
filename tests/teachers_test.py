@@ -1,3 +1,5 @@
+from core.models.assignments import AssignmentStateEnum, GradeEnum
+
 def test_get_assignments_teacher_1(client, h_teacher_1):
     response = client.get(
         '/teacher/assignments',
@@ -115,6 +117,24 @@ def test_grade_assignment_without_auth(client):
     assert data["message"] == 'principal not found'
 
 
+def test_grade_assignment(client, h_teacher_2):
+    response = client.post(
+        '/teacher/assignments/grade',
+        json={
+            'id': 2,
+            'grade': GradeEnum.C.value
+        },
+        headers=h_teacher_2
+    )
+
+    assert response.status_code == 200
+
+    assert response.json['data']['state'] == AssignmentStateEnum.GRADED.value
+    assert response.json['data']['grade'] == GradeEnum.C
+
+
+
+
 
 def test_grade_assignment_invalid_id(client, h_teacher_1):
     """
@@ -132,3 +152,28 @@ def test_grade_assignment_invalid_id(client, h_teacher_1):
     assert response.status_code == 400
     data = response.json
     assert data['error'] == 'ValidationError'
+
+
+
+def test_using_principals_api(client, h_teacher_1):
+    """
+    failure case: teacher should not be able to access principal's API
+    """
+    response = client.post(
+        '/principal/assignments/grade',
+        headers=h_teacher_1,
+        json={
+            "id": "invalid_id",
+            "grade": "A"
+        }
+    )
+
+    assert response.status_code == 403
+    data = response.json
+    assert data['error'] == 'FyleError'
+
+
+
+
+
+

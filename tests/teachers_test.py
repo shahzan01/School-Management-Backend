@@ -38,10 +38,10 @@ def test_grade_assignment_cross(client, h_teacher_2):
         }
     )
 
+    error_response = response.json
     assert response.status_code == 400
-    data = response.json
-
-    assert data['error'] == 'FyleError'
+    assert error_response['error'] == 'FyleError'
+    assert error_response["message"] == 'This assignment belongs to another teacher'
 
 
 def test_grade_assignment_bad_grade(client, h_teacher_1):
@@ -59,7 +59,6 @@ def test_grade_assignment_bad_grade(client, h_teacher_1):
 
     assert response.status_code == 400
     data = response.json
-
     assert data['error'] == 'ValidationError'
 
 
@@ -78,7 +77,6 @@ def test_grade_assignment_bad_assignment(client, h_teacher_1):
 
     assert response.status_code == 404
     data = response.json
-
     assert data['error'] == 'FyleError'
 
 
@@ -99,3 +97,38 @@ def test_grade_assignment_draft_assignment(client, h_teacher_1):
     assert response.status_code == 400
     assert error_response['error'] == 'FyleError'
   
+def test_grade_assignment_without_auth(client):
+    """
+    failure case: grading should not be allowed without authentication
+    """
+    response = client.post(
+        '/teacher/assignments/grade',
+        json={
+            "id": 1,
+            "grade": "A"
+        }
+    )
+
+    assert response.status_code == 401
+    data = response.json
+    assert data['error'] == 'FyleError'
+    assert data["message"] == 'principal not found'
+
+
+
+def test_grade_assignment_invalid_id(client, h_teacher_1):
+    """
+    failure case: invalid (non-integer) assignment ID should return an error
+    """
+    response = client.post(
+        '/teacher/assignments/grade',
+        headers=h_teacher_1,
+        json={
+            "id": "invalid_id",
+            "grade": "A"
+        }
+    )
+
+    assert response.status_code == 400
+    data = response.json
+    assert data['error'] == 'ValidationError'

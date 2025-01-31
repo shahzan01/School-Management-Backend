@@ -62,3 +62,22 @@ def test_regrade_assignment(client, h_principal):
 
     assert response.json['data']['state'] == AssignmentStateEnum.GRADED.value
     assert response.json['data']['grade'] == GradeEnum.B
+
+
+
+
+def test_grade_assignment_without_auth(client):
+    """
+    failure case: Unauthorized user should not be able to grade an assignment
+    """
+    response = client.post(
+        '/principal/assignments/grade',
+        json={
+            'id': 4,
+            'grade': GradeEnum.B.value
+        }
+    )
+    assert response.status_code == 401
+    data = response.json
+    assert data['error'] == 'FyleError'
+    assert data["message"] == 'principal not found'

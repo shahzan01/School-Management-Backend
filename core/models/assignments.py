@@ -95,11 +95,10 @@ class Assignment(db.Model):
     @classmethod
     def mark_grade(cls, _id, grade, auth_principal: AuthPrincipal):
         assignment = Assignment.get_by_id(_id)
+        assertions.assert_found(assignment, 'No assignment with this id was found')
         assertions.assert_valid(grade is not None, 'assignment with empty grade cannot be graded')
         assertions.assert_valid(grade in GradeEnum._value2member_map_, 'Invalid grade')
-        assertions.assert_found(assignment, 'No assignment with this id was found')
         if(auth_principal.principal_id is None):
-          
             assertions.assert_valid(assignment.state == AssignmentStateEnum.SUBMITTED,  'Assignment is either already graded or not submitted yet.')
             assertions.assert_valid(assignment.teacher_id == auth_principal.teacher_id, 'This assignment belongs to another teacher') 
         else:

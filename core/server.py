@@ -48,23 +48,5 @@ def handle_error(err):
     raise err
 
 
-# Assuming your models are imported correctly
-
-
-# # Get all users
-# users = User.query.all()
-# for user in users:
-#     print(vars(user))
-# print('------------------')
-# # Get all teachers
-# teachers = Teacher.query.all()
-# for teacher in teachers:
-#    print(vars(teacher))
-# print('------------------')
-# # Get all students
-# students = Student.query.all()
-# for student in students:
-#    print(vars(student))
-
 
 

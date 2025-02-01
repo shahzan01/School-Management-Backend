@@ -1,73 +1,116 @@
-# Fyle Backend Challenge
+# Application Usage Guide
 
-## Who is this for?
+## Prerequisites
+- **Python 3.12**
+- [Virtualenv](https://virtualenv.pypa.io/) (for non-Docker setup)
+- **Docker** (optional, for Docker-based usage)
 
-This challenge is meant for candidates who wish to intern at Fyle and work with our engineering team. You should be able to commit to at least 6 months of dedicated time for internship.
+---
+## With Docker
 
-## Why work at Fyle?
+### Prerequisites
 
-Fyle is a fast-growing Expense Management SaaS product. We are ~40 strong engineering team at the moment. 
+Make sure you have Docker installed on your system. If not, you can download and install it from [here](https://www.docker.com/get-started).
 
-We are an extremely transparent organization. Check out our [careers page](https://careers.fylehq.com) that will give you a glimpse of what it is like to work at Fyle. Also, check out our Glassdoor reviews [here](https://www.glassdoor.co.in/Reviews/Fyle-Reviews-E1723235.htm). You can read stories from our teammates [here](https://stories.fylehq.com).
-
-
-## Challenge outline
-
-**You are allowed to use any online/AI tool such as ChatGPT, Gemini, etc. to complete the challenge. However, we expect you to fully understand the code and logic involved.**
-
-This challenge involves writing a backend service for a classroom. The challenge is described in detail [here](./Application.md)
-
-
-## What happens next?
-
-You will hear back within 48 hours from us via email. 
-
-
-## Installation
-
-1. **Please ensure that you don't fork this repository. We want your submission to be private to avoid plagiarism**
-2. Clone the repo to your local and ensure you push your code into your own **private repository** on GitHub.
-
-### Install requirements
-
+### 1. Pull the Docker Image
+To pull the image from Docker Hub, run the following command:
+```bash
+docker pull shahzan1/flask-app:v1
 ```
+
+### 2. Run the Container
+After pulling the image, you can run the Flask app in a container. Use the following command to start it:
+```bash
+docker run -it -p 5000:5000 shahzan1/flask-app:v1
+```
+* This runs the container.
+* It maps port 5000 on your local machine to port 5000 in the container, assuming your Flask app runs on port 5000.
+
+
+### 3. Run the Server
+Inside the container, you can run:
+```bash
+bash run.sh  # Launches the Flask app
+```
+### 4. Run Tests in Docker
+To run tests inside the container, use:
+```bash
+pytest -vvv -s tests/
+```
+
+### 5. Generate Test Coverage in Docker
+To generate the test coverage report inside the container, use:
+```bash
+pytest --cov
+```
+
+
+Notes
+* Replace port mappings (e.g., 5000:5000) in docker-compose.yml if conflicts arise.
+* Configure environment variables (if needed) in .env or docker-compose.yml.
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+---
+
+## Without Docker
+
+### 1. Install Requirements
+Create and activate a virtual environment, then install dependencies:
+```bash
 virtualenv env --python=python3.8
 source env/bin/activate
 pip install -r requirements.txt
 ```
-### Reset DB
 
-```
+### 2. Initialize the Database
+```bash
 export FLASK_APP=core/server.py
-rm core/store.sqlite3
-flask db upgrade -d core/migrations/
+rm -f core/store.sqlite3  # Remove existing database (if any)
+flask db upgrade -d core/migrations/  # Create fresh database
 ```
-### Start Server
+### 3. Start the Server
+```bash
+bash run.sh  # Launches the Flask app
+```
 
-```
-bash run.sh
-```
-### Run Tests
-
-```
+### 4. Run Tests
+```bash
 pytest -vvv -s tests/
-
-# for test coverage report
-# pytest --cov
-# open htmlcov/index.html
+```
+### 5. Generate Test Coverage Report
+```bash
+pytest --cov
+open htmlcov/index.html  # View coverage report in your browser
 ```
 
 
-## Submission
 
-For submitting the assignment, please follow these steps:
 
-* Ensure that you push your code into a private repository on GitHub.
-* Add `KirtiGautam`, `kartikeyrajvaidya`, `sumanth-fyle1`, `shreyanshs7` and `satyamyesj` as collaborators to your repository with Admin access.
-* For steps to add a collaborator to your repository, refer to [this link](https://docs.github.com/en/account-and-profile/setting-up-and-managing-your-personal-account-on-github/managing-access-to-your-personal-repositories/inviting-collaborators-to-a-personal-repository).
 
-**Once you are done with your task, please use [this form](https://forms.gle/7ZBydqaoWaJTDYCA8) to complete your submission.**
 
-Once you submit the assignment, you will hear back from us within 48 hours from us via email. 
 
-We look forward to seeing your solution!
+
+
+
+
+
+
+
+
+
+
+

@@ -32,6 +32,8 @@ Inside the container, you can run:
 ```bash
 bash run.sh  # Launches the Flask app
 ```
+You can test the api Using Postman.
+
 ### 4. Run Tests in Docker
 To run tests inside the container, use:
 ```bash

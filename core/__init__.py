@@ -4,8 +4,10 @@ from flask_migrate import Migrate
 from sqlalchemy import event
 from sqlalchemy.engine import Engine
 from sqlite3 import Connection as SQLite3Connection
+from flask_cors import CORS
 
 app = Flask(__name__)
+CORS(app) # enable CORS
 app.config['SQLALCHEMY_DATABASE_URI'] = 'sqlite:///./store.sqlite3'
 app.config['SQLALCHEMY_ECHO'] = False
 app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = False

@@ -6,7 +6,7 @@ from core.apis.responses import APIResponse
 from core.apis import decorators 
 
 principal_teachers_resources = Blueprint('principal_teachers_resources', __name__)
-principal_users_resources = Blueprint('principal_users_resources', __name__)
+
 
 
 
@@ -18,6 +18,38 @@ def list_teachers(p):
     teachers_dump = TeacherSchema().dump(principals_teachers, many=True)
     return APIResponse.respond(data=teachers_dump)
 
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+principal_users_resources = Blueprint('principal_users_resources', __name__)
 
 @principal_users_resources.route('/users', methods=['POST'], strict_slashes=False)
 @decorators.accept_payload
